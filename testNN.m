@@ -29,10 +29,11 @@ figure
 hold on
 plot(x_plot, B(index), 'yo');
 plot(x_plot, ypred(index), 'r-');
+hold off
 
 figure
-semilogx(error, 'b-');
 hold on
+semilogx(error, 'b-');
 semilogx(erroryv, 'r-');
 
 %add test set prediction
