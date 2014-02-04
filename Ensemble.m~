@@ -69,7 +69,7 @@ end
 
 % Neural Net with early stop
 hidden = 10;
-w = nn_init(xtrnorm,hidden,1);
+w = nn_init(xt,hidden,1);
 [ypred, yvpred, w_out, error, erroryv, errmin, i_min] = nn_train_es(xtrnorm, ytrain, w, hidden, 1, 0.002, 1000000, xvnorm, yvalid);
 [ytpred, erroryt] = nn_eval(xtestnorm, ytest, w_out, hidden, 1);
 validation_mse(221, :) = erroryv(i_min);
