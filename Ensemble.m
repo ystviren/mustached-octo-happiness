@@ -59,7 +59,6 @@ for k = 1:10
 hidden = k;
 epochs = 10000;
 for i = 1:20
-    display(i);
 w = nn_init(xtrnorm,hidden,1);
 [ypred, yvpred, w_out, error, erroryv] = nn_train(xtrnorm, ytrain, w, hidden, 1, 0.002, epochs, xvnorm, yvalid);
 [ytestpred, test_error] = nn_eval(xtestnorm, ytest, w_out, hidden, 1);
