@@ -19,7 +19,6 @@ ytest = B(101:200);
 
 hidden = 10;
 
-% should be around 212235
 
 w = nn_init(test_a,hidden,1);
 [ypred, yvpred, w_out, error, erroryv, errmin, i_min] = nn_train_es(test_a, ytrain, w, hidden, 1, 0.002, 1000000, test_b, yvalid);
