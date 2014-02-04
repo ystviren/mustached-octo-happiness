@@ -20,7 +20,7 @@ ytest = B(101:200);
 hidden = 5;
 
 w = nn_init(test_a,hidden,1);
-[ypred, yvpred, w_out, error, erroryv] = nn_train(test_a, ytrain, w, hidden, 1, 0.002, 700000, test_b, yvalid);
+[ypred, yvpred, w_out, error, erroryv] = nn_train(test_a, ytrain, w, hidden, 1, 0.001, 5000000, test_b, yvalid);
 %[yvpred, erroryv] = nn_eval(test_b, yvalid, w_out, hidden, 1);
 
 [x_plot, index] = sort(test_a);

@@ -108,6 +108,7 @@ valid_Y = B(51:100);
 test_Y = B(101:200);
 lowest.mse = 1000000;
 lowest.index = 0;
+MSE_VALID = zeros(10, 1);
 for i = 1:5
 
 train_X = A(1:50);
@@ -118,12 +119,11 @@ valid_Y = B(51:100);
 
 W =  -0.1 + (0.2).*rand(i,1);
 W0 =  -0.1 + (0.2).*rand(1,1);
-[W_out, B_out, MSE_TRAIN, MSE_VALID] = linear_regression(train_X, train_Y, valid_X, valid_Y, W, W0, 1, 6000, 0.01);
-if lowest.mse > MSE_VALID
+[W_out, B_out, MSE_TRAIN, MSE_VALID(i)] = linear_regression(train_X, train_Y, valid_X, valid_Y, W, W0, 1, 6000, 0.01);
+if lowest.mse > MSE_VALID(i)
     lowest.index = i;
-    lowest.mse  = MSE_VALID;
+    lowest.mse  = MSE_VALID(i);
 end
-display(MSE_VALID);
 end
 for i = 6:10
 train_X = A(1:50);
@@ -134,11 +134,10 @@ valid_Y = B(51:100);
 
 W =  -0.1 + (0.2).*rand(i,1);
 W0 =  -0.1 + (0.2).*rand(1,1);
-[W_out, B_out, MSE_TRAIN, MSE_VALID] = linear_regression(train_X, train_Y, valid_X, valid_Y, W, W0, 1, 70000, 0.01);
-display(MSE_VALID);
-if lowest.mse > MSE_VALID
+[W_out, B_out, MSE_TRAIN, MSE_VALID(i)] = linear_regression(train_X, train_Y, valid_X, valid_Y, W, W0, 1, 70000, 0.01);
+if lowest.mse > MSE_VALID(i)
     lowest.index = i;
-    lowest.mse  = MSE_VALID;
+    lowest.mse  = MSE_VALID(i);
 end
 end
 %lowest MSE is index 10
