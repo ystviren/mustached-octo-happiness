@@ -22,12 +22,9 @@ error = abs(ytest - pred);
 MSE_test = sum(error)/N;
 
 confusion = zeros(2,2);
-for i = 1:N
+for i = 1:100
         confusion(1 + ytest(i), 1 + pred(i)) =  confusion(1 + ytest(i), 1 + pred(i))  + 1;
 end
-display(confusion);
-
-display (MSE_test);
 
 %% Part 2b
 clear all
@@ -65,7 +62,7 @@ pred = kNN_classification(xtrain,ytrain,k,xtest);
 test_error = sum(abs(ytest-pred))/size(xtest,1);
 
 confusion = zeros(2,2);
-for i = 1:N
+for i = 1:100
         confusion(1 + ytest(i), 1 + pred(i)) =  confusion(1 + ytest(i), 1 + pred(i))  + 1;
 end
 
@@ -103,12 +100,43 @@ for i = 1:2:11
     count = count + 1;
 end
 
-pred = kNN_classification(xtrain,ytrain,k,xtest);
+pred = kNN_classification_soft(xtrain,ytrain,k,xtest);
 test_error = sum(abs(ytest-pred))/size(xtest,1);
 test_logerror = ytest'*log(pred) + (1 - ytest)'*log(1-pred);
-
+test_pred = pred;
+pred = round(pred);
 confusion = zeros(2,2);
-for i = 1:N
+for i = 1:100
         confusion(1 + ytest(i), 1 + pred(i)) =  confusion(1 + ytest(i), 1 + pred(i))  + 1;
 end
 
+%% Part 2d
+clear all
+A = importdata('ClassificationX.txt');
+B = importdata('ClassificationY.txt');
+
+xtrain = A(1:50);
+xvalid = A(51:100);
+xtest = A(101:200);
+
+ytrain = B(1:50);
+yvalid = B(51:100);
+ytest = B(101:200);
+
+W =  -0.1 + (0.2).*rand(1,1);
+W0 =  -0.1 + (0.2).*rand(1,1);
+[W_out, B_out, MSE_TRAIN, MSE_VALID] = linear_regression(xtrain, ytrain, xvalid, yvalid, W, W0, 1, 6000, 0.01);
+[MSE_TEST, y_out, x_out] = linear_regression_eval(xtrain, xtest, ytest, W_out,B_out);
+
+y_out = round(y_out);
+test_error = sum(abs(ytest-y_out))/size(xtest,1);
+
+confusion = zeros(2,2);
+for i = 1:100
+        confusion(1 + ytest(i), 1 + y_out(i)) =  confusion(1 + ytest(i), 1 + y_out(i))  + 1;
+end
+figure
+hold on
+plot(xtrain,ytrain, 'b*');
+plot(xvalid,yvalid, 'g+');
+plot(xtest,y_out, 'ro');
