@@ -74,3 +74,38 @@ w = nn_init(xtrnorm,hidden,1);
 [ytpred, erroryt] = nn_eval(xtestnorm, ytest, w_out, hidden, 1);
 validation_mse(221, :) = erroryv(i_min);
 test_prediction(221, :) = ytpred;
+
+% Calculate all ensembles
+pred_all_ensemble = mean(test_prediction);
+error_all_ensemble = (ytest - pred_all_ensemble');
+error_all_ensemble = sum(error_all_ensemble.^2)/100;
+
+% Calculate best 3 ensembles
+
+[best_model_valid, best_valid_index] = sort(validation_mse);
+pred_best_3 = test_prediction(best_valid_index(1:3), :);
+pred_best_3 = mean(pred_best_3);
+
+error_best_3 = (ytest - pred_best_3');
+error_best_3 = sum(error_best_3.^2)/100;
+
+% Weighted best 3 ensembles
+
+pred_w_best_3 = test_prediction(best_valid_index(1:3), :);
+weight_for_3 = best_model_valid(1:3);
+weight_for_3 = weight_for_3./(sum(weight_for_3));
+weight_for_3 = 1./weight_for_3;
+
+pred_w_best_3_weighted = bsxfun(@times, pred_w_best_3, weight_for_3);
+pred_w_best_3_weighted = sum(pred_w_best_3_weighted, 1)/sum(weight_for_3);
+
+error_w_best_3 = (ytest - pred_w_best_3_weighted');
+error_w_best_3 = sum(error_w_best_3.^2)/100;
+
+figure
+hold on
+plot(xtrain,ytrain, 'ro');
+plot(xtest,ytest, 'b+');
+plot(xtest, pred_w_best_3_weighted, 'go');
+
+

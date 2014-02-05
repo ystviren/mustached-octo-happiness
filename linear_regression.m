@@ -15,10 +15,10 @@ if k > 1
         x_valid(:,i) = valx.*x_valid(:,i-1);
     end
 end
-mean_x = mean(x_train);
-std_x = std(x_train);
-x_train = bsxfun(@minus, x_train, mean(x_train));
-x_train = bsxfun(@rdivide, x_train, std(x_train));
+mean_x = mean(x_train, 1);
+std_x = std(x_train, 1);
+x_train = bsxfun(@minus, x_train, mean_x);
+x_train = bsxfun(@rdivide, x_train, std_x);
 x_valid = bsxfun(@minus, x_valid, mean_x);
 x_valid = bsxfun(@rdivide, x_valid, std_x);
 x_train = cat(2, x_train, ones(n_train, 1));
