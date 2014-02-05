@@ -140,3 +140,49 @@ hold on
 plot(xtrain,ytrain, 'b*');
 plot(xvalid,yvalid, 'g+');
 plot(xtest,y_out, 'ro');
+
+%% Part 2e
+
+lowest_valid = 10000;
+lowest_index = 0;
+MSE_VALID = zeros(10,1);
+
+for i = 1:5
+W =  -0.1 + (0.2).*rand(i,1);
+W0 =  -0.1 + (0.2).*rand(1,1);
+[W_out, B_out, MSE_TRAIN, MSE_VALID(i)] = linear_regression(xtrain, ytrain, xvalid, yvalid, W, W0, 1, 6000, 0.01);
+if lowest_valid> MSE_VALID(i)
+    lowest_index = i;
+    lowest_valid = MSE_VALID(i);
+	W_lowest = W_out;
+    B_lowest = B_out;
+end
+end
+
+for i = 6:10
+W =  -0.1 + (0.2).*rand(i,1);
+W0 =  -0.1 + (0.2).*rand(1,1);
+[W_out, B_out, MSE_TRAIN, MSE_VALID(i)] = linear_regression(xtrain, ytrain, xvalid, yvalid, W, W0, 1, 6000, 0.01);
+if lowest_valid> MSE_VALID(i)
+	lowest_index = i;
+	lowest_valid = MSE_VALID(i);
+	W_lowest = W_out;
+    B_lowest = B_out;
+end
+end
+
+[MSE_TEST, y_out, x_out] = linear_regression_eval(xtrain, xtest, ytest, W_lowest,B_lowest);
+
+y_out = round(y_out);
+test_error = sum(abs(ytest-y_out))/size(xtest,1);
+
+confusion = zeros(2,2);
+for i = 1:100
+        confusion(1 + ytest(i), 1 + y_out(i)) =  confusion(1 + ytest(i), 1 + y_out(i))  + 1;
+end
+figure
+hold on
+plot(xtrain,ytrain, 'b*');
+plot(xvalid,yvalid, 'g+');
+plot(xtest,y_out, 'ro');
+
