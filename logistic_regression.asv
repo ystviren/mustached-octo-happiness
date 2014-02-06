@@ -33,21 +33,22 @@ for i = 1:its
 ytrain = xtrain *w_in;
 yvalid = xvalid *w_in;
 
-ytrain = 1./(1 + exp(-ytrain));
-yvalid = 1./(1 + exp(-yvalid));
-
+ytrain = 1/(1 + exp(-ytrain));
+yvalid = 1/(1 + exp(-yvalid));
+display(ytrain);
+display(yvalid);
 
 predx = ytrain;
 predxv = yvalid;
 %calculate MSE
-logtrain = y'*log(ytrain) + (1 - y)'*log(1-ytrain);
+logtrain = y'*log(ytrain') + (1 - y)'*log(1-ytrain');
 logtrain = logtrain/ntrain;
 
 
-logvalid = valy'*log(yvalid) + (1 - valy)'*log(1-yvalid);
+logvalid = valy'*log(yvalid') + (1 - valy)'*log(1-yvalid');
 logvalid = logvalid/nvalid;
 
-tmp = y - ytrain;
+tmp = y - ytrain';
 
 w_out = w_in(1:k,1);
 b_out = w_in(k+1,1);

@@ -1,4 +1,4 @@
-function [w_out, b_out, logtrain, logvalid, predx, predxv ] = logistic_regression( x, y, valx, valy, w, b, alpha, its, lr )
+function [predtest, logtest, errort ] = logistic_regression_eval( x, valx, valy, w, b)
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -24,12 +24,8 @@ xvalid = bsxfun(@rdivide, xvalid, std_x);
 xtrain = cat(2, xtrain, ones(ntrain, 1));
 xvalid = cat(2, xvalid, ones(nvalid, 1));
 
-
-%calculate win*xin pass the value into sigmoid fucntion
-%calcualte log error for both valid and training.
-
 w_in = w_out;
-for i = 1:its
+
 ytrain = xtrain *w_in;
 yvalid = xvalid *w_in;
 
@@ -37,24 +33,16 @@ ytrain = 1./(1 + exp(-ytrain));
 yvalid = 1./(1 + exp(-yvalid));
 
 
-predx = ytrain;
-predxv = yvalid;
+predtest = yvalid;
 %calculate MSE
-logtrain = y'*log(ytrain) + (1 - y)'*log(1-ytrain);
-logtrain = logtrain/ntrain;
-
 
 logvalid = valy'*log(yvalid) + (1 - valy)'*log(1-yvalid);
 logvalid = logvalid/nvalid;
+logtest = logvalid;
 
-tmp = y - ytrain;
+errort = abs(valy - round(yvalid));
+errort = sum(errort)/nvalid;
 
-w_out = w_in(1:k,1);
-b_out = w_in(k+1,1);
-dE_dw = (tmp'*xtrain)./ntrain;
-w_in = w_in.*alpha + dE_dw'.*lr;
-%display(MSE_valid);
 
 end
 
-end

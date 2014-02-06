@@ -146,11 +146,11 @@ plot(xtest,y_out, 'ro');
 lowest_valid = 10000;
 lowest_index = 0;
 MSE_VALID = zeros(10,1);
-
+MSE_TRAIN = zeros(10,1);
 for i = 1:5
 W =  -0.1 + (0.2).*rand(i,1);
 W0 =  -0.1 + (0.2).*rand(1,1);
-[W_out, B_out, MSE_TRAIN, MSE_VALID(i)] = linear_regression(xtrain, ytrain, xvalid, yvalid, W, W0, 1, 6000, 0.01);
+[W_out, B_out, MSE_TRAIN(i), MSE_VALID(i)] = linear_regression_class(xtrain, ytrain, xvalid, yvalid, W, W0, 1, 6000, 0.01);
 if lowest_valid> MSE_VALID(i)
     lowest_index = i;
     lowest_valid = MSE_VALID(i);
@@ -162,7 +162,7 @@ end
 for i = 6:10
 W =  -0.1 + (0.2).*rand(i,1);
 W0 =  -0.1 + (0.2).*rand(1,1);
-[W_out, B_out, MSE_TRAIN, MSE_VALID(i)] = linear_regression(xtrain, ytrain, xvalid, yvalid, W, W0, 1, 6000, 0.01);
+[W_out, B_out, MSE_TRAIN(i), MSE_VALID(i)] = linear_regression_class(xtrain, ytrain, xvalid, yvalid, W, W0, 1, 6000, 0.01);
 if lowest_valid> MSE_VALID(i)
 	lowest_index = i;
 	lowest_valid = MSE_VALID(i);
