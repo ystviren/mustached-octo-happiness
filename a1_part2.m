@@ -49,8 +49,8 @@ count  = 1;
 for i = 1:2:11
     pred = kNN_classification(xtrain,ytrain,i,xvalid);
     error = abs(yvalid - pred);
-    MSE_valid(count,1) = sum(error)/N;
-    MSE = sum(error)/N;
+    MSE_valid(count,1) = sum(error.^2)/N;
+    MSE = sum(error.^2)/N;
     if min_err > MSE
         k = i;
         min_err = MSE;
